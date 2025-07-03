@@ -27,9 +27,15 @@ public class SecurityConfig {
             .cors()
             .and()
             .csrf().disable()
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll() // acceso público a todo
-            );
+                .requestMatchers("/api/v1/auth/registro", "/api/v1/auth/login", "/api/v1/auth/logout").permitAll()
+                .requestMatchers("/api/v1/auth/verify").permitAll() // Opcional: permitir verificación pública
+                .anyRequest().authenticated() // Requiere autenticación para todo lo demás
+            )
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
