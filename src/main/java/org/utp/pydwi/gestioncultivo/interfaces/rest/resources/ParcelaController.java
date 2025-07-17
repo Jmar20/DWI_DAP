@@ -44,6 +44,16 @@ public class ParcelaController {
         return ResponseEntity.ok(parcelas);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Parcela> actualizarParcela(@PathVariable Integer id, @Valid @RequestBody RegistrarParcelaCommand command) {
+        try {
+            Parcela parcelaActualizada = registrarParcelaService.actualizarParcela(id, command);
+            return ResponseEntity.ok(parcelaActualizada);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Object>> eliminarParcela(@PathVariable Integer id) {
         try {
