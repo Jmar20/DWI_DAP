@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/planificaciones")
+@RequestMapping("/api/v1/planificacion")
 @RequiredArgsConstructor
 public class PlanificacionController {
     private final PlanificacionCommandService commandService;
@@ -43,7 +43,7 @@ public class PlanificacionController {
             .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/cultivo/{cultivoId}")
+    @GetMapping("/actividades/cultivo/{cultivoId}")
     public ResponseEntity<List<Planificacion>> obtenerPorCultivo(@PathVariable Integer cultivoId) {
         return ResponseEntity.ok(queryService.findAllByCultivoId(cultivoId));
     }

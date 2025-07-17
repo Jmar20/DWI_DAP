@@ -15,4 +15,8 @@ public class ConsultarActividadesPorCultivoService {
     public List<Actividad> obtenerActividadesPorCultivo(Integer cultivoId) {
         return actividadRepository.findByCultivoId(cultivoId);
     }
+
+    public List<Actividad> obtenerActividadesPorUsuario(Integer usuarioId) {
+        return actividadRepository.findByUserId(usuarioId);
+    }
 }

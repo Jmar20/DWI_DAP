@@ -17,11 +17,17 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    @Value("${jwt.secret}")
-    private String secret;
+    private final String secret;
+    private final Long expiration;
+    private final SecretKey key;
 
-    @Value("${jwt.expiration}")
-    private Long expiration;
+    public JwtService(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.expiration}") Long expiration) {
+        this.secret = secret;
+        this.expiration = expiration;
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -37,7 +43,11 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     public Boolean isTokenExpired(String token) {
@@ -50,7 +60,6 @@ public class JwtService {
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
-        SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)

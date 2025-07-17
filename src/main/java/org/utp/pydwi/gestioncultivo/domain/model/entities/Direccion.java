@@ -1,5 +1,6 @@
 package org.utp.pydwi.gestioncultivo.domain.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,5 +25,6 @@ public class Direccion {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_parcela")
+    @JsonIgnore
     private Parcela parcela;
 }

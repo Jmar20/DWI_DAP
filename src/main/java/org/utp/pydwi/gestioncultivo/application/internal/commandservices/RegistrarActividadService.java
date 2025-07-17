@@ -16,12 +16,43 @@ public class RegistrarActividadService {
     public Actividad registrarActividad(RegistrarActividadCommand command) {
         Cultivo cultivo = cultivoRepository.findById(command.getCultivoId())
                 .orElseThrow(() -> new IllegalArgumentException("Cultivo no encontrado"));
+
         Actividad actividad = Actividad.builder()
-                .tipo(command.getTipo())
-                .fecha(command.getFecha())
+                .nombre(command.getNombre())
+                .nombreActividad(command.getNombre()) // Llenar ambos campos con el mismo valor
+                .descripcion(command.getDescripcion())
+                .fechaEjecucion(command.getFechaEjecucion())
+                .prioridad(command.getPrioridad())
+                .realizada(command.getRealizada() != null ? command.getRealizada() : false)
                 .cultivo(cultivo)
+                .userId(command.getUserId())
+                .cultivoId(cultivo.getId()) // Forzar el id explícitamente
                 .build();
-        return actividadRepository.save(actividad);
+        Actividad saved = actividadRepository.save(actividad);
+        actividadRepository.flush();
+        return saved;
+    }
+
+    public Actividad actualizarActividad(ActualizarActividadCommand command) {
+        Actividad actividadExistente = actividadRepository.findById(command.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Actividad no encontrada"));
+        
+        Cultivo cultivo = cultivoRepository.findById(command.getCultivoId())
+                .orElseThrow(() -> new IllegalArgumentException("Cultivo no encontrado"));
+
+        // Actualizar campos
+        actividadExistente.setNombre(command.getNombre());
+        actividadExistente.setNombreActividad(command.getNombre()); // Llenar ambos campos
+        actividadExistente.setDescripcion(command.getDescripcion());
+        actividadExistente.setFechaEjecucion(command.getFechaEjecucion());
+        actividadExistente.setPrioridad(command.getPrioridad());
+        actividadExistente.setRealizada(command.getRealizada() != null ? command.getRealizada() : false);
+        actividadExistente.setCultivo(cultivo);
+        actividadExistente.setUserId(command.getUserId());
+
+        Actividad updated = actividadRepository.save(actividadExistente);
+        actividadRepository.flush();
+        return updated;
     }
 
     public Actividad registrarActividad(Integer cultivoId, RegistrarActividadCommand command) {

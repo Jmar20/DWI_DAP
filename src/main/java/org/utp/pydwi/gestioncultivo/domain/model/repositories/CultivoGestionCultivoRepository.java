@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CultivoGestionCultivoRepository extends JpaRepository<Cultivo, Integer> {
     List<Cultivo> findByParcelaId(Integer parcelaId);
+    List<Cultivo> findByUserId(Integer userId);  // ¡CRÍTICO! Método para buscar por userId
 }

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/alertas/actividad")
+@RequestMapping("/api/v1/alertas/actividad")
 @RequiredArgsConstructor
 public class AlertaActividadController {
     private final AlertaCommandService commandService;

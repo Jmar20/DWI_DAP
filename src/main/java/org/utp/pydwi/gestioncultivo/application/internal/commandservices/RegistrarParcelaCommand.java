@@ -11,6 +11,10 @@ public class RegistrarParcelaCommand {
     @NotNull
     private Integer usuarioId;
     private DireccionRequest direccion;
+    
+    // Campos adicionales
+    private String descripcion;
+    private Double superficie;
 
     @Data
     public static class DireccionRequest {

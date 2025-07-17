@@ -28,4 +28,19 @@ public class JpaUsuarioRepositoryAdapter implements UsuarioRepository {
     public boolean existsByEmail(Email email) {
         return jpaUsuarioRepository.existsByEmail(email);
     }
+
+    @Override
+    public Optional<Usuario> findById(Integer id) {
+        return jpaUsuarioRepository.findById(id);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        jpaUsuarioRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean existsById(Integer id) {
+        return jpaUsuarioRepository.existsById(id);
+    }
 }

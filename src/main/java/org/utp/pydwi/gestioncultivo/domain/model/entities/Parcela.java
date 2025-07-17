@@ -19,6 +19,17 @@ public class Parcela {
 
     private String ubicacion;
 
+    // Nuevos campos para geolocalización
+    private Double latitud;
+    private Double longitud;
+
     @Column(name = "usuario_id")
     private Integer usuarioId;
+
+    // Campos adicionales para información detallada
+    @Column(name = "descripcion", length = 500)
+    private String descripcion;
+
+    @Column(name = "superficie")
+    private Double superficie;
 }

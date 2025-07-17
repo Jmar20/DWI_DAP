@@ -24,4 +24,8 @@ public class Alerta {
 
     @Column(name = "actividad_id")
     private Integer actividadId;
+
+    // Nuevo campo para alertas automáticas relacionadas directamente con cultivos
+    @Column(name = "cultivo_id")
+    private Integer cultivoId;
 }

@@ -31,9 +31,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/auth/registro", "/api/v1/auth/login", "/api/v1/auth/logout").permitAll()
-                .requestMatchers("/api/v1/auth/verify").permitAll() // Opcional: permitir verificación pública
-                .anyRequest().authenticated() // Requiere autenticación para todo lo demás
+                .requestMatchers("/**").permitAll() // Permitir todos los endpoints sin seguridad
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

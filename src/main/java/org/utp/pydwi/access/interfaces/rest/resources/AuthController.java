@@ -52,8 +52,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody LoginRequest request, HttpServletResponse response) {
-        String token = authenticationService.login(request);
+    public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody LoginRequest request, HttpServletResponse response) {
+        var loginResult = authenticationService.loginWithUser(request);
+        String token = loginResult.getToken();
+        var user = loginResult.getUser();
         
         // Crear cookie HTTP-only más robusta
         Cookie cookie = new Cookie("authToken", token);
@@ -70,9 +72,14 @@ public class AuthController {
             String.format("authToken=%s; Path=/; Max-Age=%d; HttpOnly; SameSite=Lax", 
                 token, 24 * 60 * 60));
         
-        Map<String, String> responseData = new HashMap<>();
-        responseData.put("message", "Login exitoso");
-        responseData.put("success", "true");
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("message", "Inicio de sesión exitoso");
+        responseData.put("success", true);
+        responseData.put("token", token);
+        responseData.put("userId", user.getId());
+        responseData.put("userName", user.getNombre().getValue());
+        responseData.put("userEmail", user.getEmail().getValue());
+        responseData.put("userRole", user.getRol().toString());
         return ResponseEntity.ok(responseData);
     }
 
@@ -106,7 +113,11 @@ public class AuthController {
         try {
             String email = jwtService.extractUsername(token);
             if (email != null && !jwtService.isTokenExpired(token)) {
-                return ResponseEntity.ok(Map.of("valid", true, "email", email));
+                return ResponseEntity.ok(Map.of(
+                    "valid", true,
+                    "email", email,
+                    "token", token
+                ));
             } else {
                 return ResponseEntity.status(401).body(Map.of("valid", false, "message", "Token inválido o expirado"));
             }

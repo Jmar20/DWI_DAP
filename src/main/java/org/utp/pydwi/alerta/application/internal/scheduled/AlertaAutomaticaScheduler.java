@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import org.utp.pydwi.gestioncultivo.domain.model.entities.Cultivo;
 import org.utp.pydwi.gestioncultivo.domain.model.entities.Parcela;
 import org.utp.pydwi.gestioncultivo.domain.model.entities.Actividad;
-import org.utp.pydwi.gestioncultivo.domain.model.entities.Planta;
 import org.utp.pydwi.gestioncultivo.domain.model.entities.Direccion;
 import org.utp.pydwi.gestioncultivo.application.internal.queryservices.CultivoQueryService;
 import org.utp.pydwi.gestioncultivo.application.internal.queryservices.ParcelaQueryService;
@@ -47,7 +46,7 @@ public class AlertaAutomaticaScheduler {
         for (Cultivo cultivo : cultivos) {
             Actividad ultimaAbono = actividadQueryService.findUltimaActividadPorTipo(cultivo.getId(), "abono");
             LocalDate hoy = LocalDate.now();
-            if (ultimaAbono == null || ChronoUnit.DAYS.between(ultimaAbono.getFecha(), hoy) >= 3) {
+            if (ultimaAbono == null || ChronoUnit.DAYS.between(ultimaAbono.getFechaEjecucion(), hoy) >= 3) {
                 Alerta alerta = new Alerta();
                 alerta.setDescripcion("Es momento de realizar abono al cultivo " + cultivo.getTipo());
                 alerta.setTipo("abono");
@@ -76,7 +75,7 @@ public class AlertaAutomaticaScheduler {
                 for (Cultivo cultivo : cultivos) {
                     Actividad ultimaRiego = actividadQueryService.findUltimaActividadPorTipo(cultivo.getId(), "riego");
                     LocalDate hoy = LocalDate.now();
-                    if (ultimaRiego == null || ChronoUnit.DAYS.between(ultimaRiego.getFecha(), hoy) >= 1) {
+                    if (ultimaRiego == null || ChronoUnit.DAYS.between(ultimaRiego.getFechaEjecucion(), hoy) >= 1) {
                         Alerta alerta = new Alerta();
                         alerta.setDescripcion("Condiciones climáticas adversas: se recomienda riego en la parcela " + parcela.getNombre());
                         alerta.setTipo("riego");

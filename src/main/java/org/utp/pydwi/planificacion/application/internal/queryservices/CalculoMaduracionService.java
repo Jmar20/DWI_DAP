@@ -19,7 +19,7 @@ public class CalculoMaduracionService {
         Optional<Cultivo> cultivoOpt = cultivoRepository.findById(cultivoId);
         if (cultivoOpt.isEmpty()) throw new RuntimeException("Cultivo no encontrado");
         Cultivo cultivo = cultivoOpt.get();
-        Integer plantaId = cultivo.getIdPlanta();
+        Integer plantaId = cultivo.getPlantaId();
         Optional<Planta> plantaOpt = plantaRepository.findById(plantaId);
         if (plantaOpt.isEmpty()) throw new RuntimeException("Planta no encontrada");
         Planta planta = plantaOpt.get();

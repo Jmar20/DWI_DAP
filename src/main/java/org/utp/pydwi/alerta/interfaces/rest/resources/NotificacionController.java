@@ -9,7 +9,7 @@ import org.utp.pydwi.alerta.domain.model.entities.Notificacion;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/notificaciones")
+@RequestMapping("/api/v1/notificaciones")
 @RequiredArgsConstructor
 public class NotificacionController {
     private final NotificacionCommandService commandService;

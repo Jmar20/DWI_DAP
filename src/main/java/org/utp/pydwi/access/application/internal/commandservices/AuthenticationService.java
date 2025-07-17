@@ -42,4 +42,16 @@ public class AuthenticationService {
         var user = userDomainService.buscarPorEmail(new Email(request.getEmail()));
         return jwtService.generateToken(user);
     }
+
+    public LoginResult loginWithUser(LoginRequest request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+        var user = userDomainService.buscarPorEmail(new Email(request.getEmail()));
+        String token = jwtService.generateToken(user);
+        return new LoginResult(token, user);
+    }
 }
